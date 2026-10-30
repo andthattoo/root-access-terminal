@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070c09">
+  <meta name="description" content="Press any key. Write fake code. Finish a job. Get paid. A standalone Root Access ASCII hacking prototype.">
+  <title>Root Access — Type to hack</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div class="brand"><span class="brand-symbol" aria-hidden="true">[r_]</span><div>ROOT ACCESS<small>TERMINAL PLAYGROUND</small></div></div>
+      <span class="online"><i></i> LOCAL CONNECTION</span>
+    </header>
+
+    <section class="terminal" aria-label="ASCII hacking terminal">
+      <div class="terminal-top"><span><i class="lamp"></i> ra://localhost/session</span><span>TTY_01 <b>■ ■ ■</b></span></div>
+      <div class="session-head">
+        <div class="mission"><span class="eyebrow" id="job-id">CONTRACT 001</span><h1 id="target">Neighbor's Wi-Fi</h1><p id="brief">Cracking a Wi-Fi password for extremely important cat videos.</p></div>
+        <div class="wallet"><span class="eyebrow">TOTAL EARNED</span><div id="cash">$0</div><span id="completed">0 JOBS COMPLETE</span><div id="cash-float" aria-hidden="true"></div></div>
+      </div>
+      <div class="workspace">
+        <section class="code-pane" aria-label="Simulated hacking output">
+          <div class="pane-title"><span id="file">wifi_handshake.ra</span><span id="status">AWAITING INPUT<span class="blip">_</span></span></div>
+          <div class="code-window" id="code-window"><div id="code" aria-hidden="true"></div><div class="idle-prompt" id="idle-prompt"><span>&gt; READY WHEN YOU ARE.</span><strong>Press <kbd>ANY KEY</kbd> to hack.</strong></div></div>
+          <div class="packet-footer"><span id="offset">OFFSET 0x0000</span><span id="bytes">0 BYTES WRITTEN</span></div>
+        </section>
+        <aside class="network" aria-label="Connection visualization">
+          <div class="pane-title">PACKET ROUTE <span id="route-status">IDLE</span></div>
+          <div class="nodes" aria-hidden="true">
+            <pre class="node active" data-node="0">┌──────────────────┐
+│  &gt;_ LOCAL CLIENT │
+└────────┬─────────┘</pre>
+            <div class="wire" data-wire="0">│<br><span>▼</span><br>│</div>
+            <pre class="node" data-node="1">┌────────┴─────────┐
+│  ◇  RELAY TUNNEL │
+└────────┬─────────┘</pre>
+            <div class="wire" data-wire="1">│<br><span>▼</span><br>│</div>
+            <pre class="node" data-node="2">┌────────┴─────────┐
+│  #  TARGET CORE  │
+└────────┬─────────┘</pre>
+            <div class="wire" data-wire="2">│<br><span>▼</span><br>│</div>
+            <pre class="node" data-node="3">┌────────┴─────────┐
+│  $  YOUR WALLET  │
+└──────────────────┘</pre>
+          </div>
+          <div class="traffic"><span>DATA STREAM</span><pre id="stream" aria-hidden="true">00 00 00 00 00 00
+00 00 00 00 00 00
+00 00 00 00 00 00</pre></div>
+        </aside>
+      </div>
+      <section class="controls" aria-label="Hack progress">
+        <div class="progress-label"><span id="operation">ESTABLISH UPLINK</span><span id="percent">0%</span></div>
+        <div class="progress-track" role="progressbar" aria-label="Job progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress"><div id="progress-fill"></div><span id="ascii-bar" aria-hidden="true">[································]</span></div>
+        <div class="action-row"><div class="reward"><span>ON COMPLETION</span><strong id="reward">+$75</strong></div><button id="hack" type="button" aria-label="Hack. Press or hold any key."><span class="button-prompt">&gt;_</span> HACK <kbd>ANY KEY</kbd></button></div>
+      </section>
+      <footer class="console-footer"><span id="feed">&gt; Press or hold any key. Every burst writes more code.</span><span class="cursor-block" aria-hidden="true">█</span></footer>
+      <div class="payout" id="payout" aria-hidden="true"><span>ACCESS GRANTED</span><strong id="payout-amount">+$75</strong><small>PAYMENT RECEIVED</small></div>
+    </section>
+    <footer class="page-footer"><span>KEEP TYPING. KEEP EARNING.</span><span>ASCII LAB <span class="divider">/</span> BAYLEL GAMES</span></footer>
+    <div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
