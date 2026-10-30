@@ -2,7 +2,7 @@
 
 A standalone ASCII hacking toy by Baylel Games.
 
-**[Play in your browser](https://andthattoo.github.io/root-access-terminal/)**
+**[Play in your browser](https://terminal.andthattoo.dev/)**
 
 Select one of six jobs from the left menu, then type with any regular keyboard key
 or hold HACK. Each job has a unique chain of 3–5 targets. Compose CLI commands,
@@ -18,8 +18,16 @@ session. This prototype is separate from the Root Access Unity game.
 
 ## Hosting
 
-GitHub Pages serves the root of `main`. The `.nojekyll` file keeps it a plain
-static site. All asset URLs are relative, so it works under this repository's path.
-Push updates to `main` to republish.
+The primary site is hosted on Cloudflare Workers Static Assets as
+`root-access-terminal`, with the custom domain `terminal.andthattoo.dev`.
+The fallback Cloudflare address is
+https://root-access-terminal.omer-kaya.workers.dev/.
+
+This repository stores the source. To publish on Cloudflare, upload the four
+root assets (`index.html`, `style.css`, `app.js`, `game.js`) to that Worker.
+GitHub pushes do not currently deploy to Cloudflare automatically.
+
+The existing GitHub Pages mirror still serves `main`; `.nojekyll` keeps it a
+plain static site. All asset URLs are relative.
 
 All code shown in the terminal is fictional visual feedback.
