@@ -50,13 +50,18 @@ function buildNodes(){
   $('nodes').replaceChildren(fragment);
 }
 function frame(lines){return '┌'+'─'.repeat(24)+'┐\n'+lines.map(line=>'│ '+line.padEnd(22,' ').slice(0,22)+' │').join('\n')+'\n└'+'─'.repeat(24)+'┘';}
-function renderLog(){
+function renderLog(force=false){
   const key=game.index+':'+game.runs[game.index]+':'+game.state.log.length;
-  if(logKey===key)return;
+  if(!force&&logKey===key)return;
   logKey=key;
   const fragment=document.createDocumentFragment();
-  for(const line of game.state.log)fragment.append(element('div','log-line '+line.kind,line.text));
-  $('code').replaceChildren(fragment);$('code-window').scrollTop=$('code-window').scrollHeight;
+  // Keep the newest outputs that fit, including wrapped lines on narrow screens.
+  for(const line of game.state.log.slice(-12))fragment.append(element('div','log-line '+line.kind,line.text));
+  const code=$('code'),window=$('code-window');
+  code.replaceChildren(fragment);
+  const style=getComputedStyle(window);
+  const height=window.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
+  while(code.children.length>1&&code.scrollHeight>height)code.firstElementChild.remove();
 }
 function render(){
   const s=game.state,c=game.contract,paid=game.paid,milestone=s.phase==='milestone';
@@ -165,4 +170,6 @@ function tick(now){
   if(!holding&&now-lastInput>90)$('hack').classList.remove('pressed');
   requestAnimationFrame(tick);
 }
-setupJobs();render();requestAnimationFrame(tick);
+setupJobs();render();
+new ResizeObserver(()=>renderLog(true)).observe($('code-window'));
+requestAnimationFrame(tick);

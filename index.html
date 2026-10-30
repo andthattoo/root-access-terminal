@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#070c09">
   <meta name="description" content="Choose a contract. Type commands. Breach each target in the chain and get paid. A fictional ASCII hacking playground.">
   <title>Root Access — Terminal Playground</title>
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <main class="shell">
@@ -30,7 +30,7 @@
         <div class="workspace">
           <section class="code-pane" aria-label="Command terminal">
             <div class="pane-title"><span id="file">root@neighbor.wifi:~</span><span id="status">AWAITING INPUT</span></div>
-            <div class="code-window" id="code-window" tabindex="0" aria-label="Terminal command history"><div id="code"></div></div>
+            <div class="code-window" id="code-window" role="region" aria-label="Latest terminal output"><div id="code"></div></div>
             <div class="command-entry">
               <div class="prompt-line"><span class="prompt-symbol" aria-hidden="true">❯</span><span id="command-text"></span><span class="typing-cursor" id="cursor" aria-hidden="true"></span></div>
               <div class="execution-track" id="execution" hidden><div id="execution-fill"></div></div>
@@ -56,6 +56,6 @@
     <footer class="page-footer"><span>CHOOSE A TARGET. BREACH THE CHAIN. GET PAID.</span><span>ASCII LAB / BAYLEL GAMES</span></footer>
     <div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
   </main>
-  <script type="module" src="app.js?v=2"></script>
+  <script type="module" src="app.js?v=3"></script>
 </body>
 </html>

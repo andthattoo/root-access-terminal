@@ -13,6 +13,9 @@ Switching jobs pauses and preserves unfinished progress for the browser session.
 Completed jobs can be replayed. The on-screen HACK button supports mouse and touch.
 Browser shortcuts and Tab navigation keep their normal behavior.
 
+The game fits the viewport. The terminal shows up to 12 recent outputs, trimming
+older lines to fit the available space while keeping the prompt and HACK visible.
+
 No installation, account, dependencies or backend. Reloading starts a fresh
 session. This prototype is separate from the Root Access Unity game.
 
