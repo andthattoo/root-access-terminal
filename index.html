@@ -6,12 +6,12 @@
   <meta name="theme-color" content="#070c09">
   <meta name="description" content="Choose a contract. Type commands. Breach each target in the chain and get paid. A fictional ASCII hacking playground.">
   <title>Root Access — Terminal Playground</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <main class="shell">
     <header class="masthead">
-      <div class="brand"><span class="brand-symbol" aria-hidden="true">[r_]</span><div>ROOT ACCESS<small>TERMINAL PLAYGROUND / V.02</small></div></div>
+      <div class="brand"><span class="brand-symbol" aria-hidden="true">[r_]</span><div>ROOT ACCESS<small>TERMINAL PLAYGROUND / V.03</small></div></div>
       <div class="wallet"><span class="eyebrow">TOTAL EARNED</span><strong id="cash">$0</strong><span id="completed">0 JOBS COMPLETE</span><span id="cash-float" aria-hidden="true"></span></div>
     </header>
     <div class="layout">
@@ -32,9 +32,8 @@
             <div class="pane-title"><span id="file">root@neighbor.wifi:~</span><span id="status">AWAITING INPUT</span></div>
             <div class="code-window" id="code-window" role="region" aria-label="Latest terminal output"><div id="code"></div></div>
             <div class="command-entry">
-              <div class="prompt-line"><span class="prompt-symbol" aria-hidden="true">❯</span><span id="command-text"></span><span class="typing-cursor" id="cursor" aria-hidden="true"></span></div>
-              <div class="execution-track" id="execution" hidden><div id="execution-fill"></div></div>
-              <div class="command-meta"><span id="command-hint">Type any key to compose a command.</span><span id="command-count">CMD 1 / 2</span></div>
+              <div class="prompt-line"><span class="prompt-symbol" aria-hidden="true">❯</span><div id="command-scroll"><span id="command-text"></span><span class="typing-cursor" id="cursor" aria-hidden="true"></span></div></div>
+              <div class="command-meta"><span id="command-hint">Type any key to compose a command.</span><span id="command-count">CMD 1 / 4</span></div>
             </div>
           </section>
           <aside class="network" aria-label="Sequential hacking targets">
@@ -44,18 +43,16 @@
           </aside>
         </div>
         <section class="controls" aria-label="Hack progress">
-          <div class="progress-label"><span id="operation">ROUTER / COMMAND 1 OF 2</span><span id="percent">0% COMPLETE</span></div>
+          <div class="progress-label"><span id="operation">ROUTER / COMMAND 1 OF 4</span><span id="percent">0% COMPLETE</span></div>
           <div class="progress-track" role="progressbar" aria-label="Contract progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress"><div id="progress-fill"></div><span id="ascii-bar" aria-hidden="true">[································]</span></div>
           <div class="action-row"><div class="reward"><span>CONTRACT PAYOUT</span><strong id="reward">+$75</strong><small>All targets must be breached.</small></div><button id="hack" type="button" aria-label="Hack. Press or hold any typing key."><span class="button-prompt" aria-hidden="true">❯_</span><span id="hack-label">HACK</span><kbd>ANY KEY</kbd></button></div>
         </section>
         <footer class="console-footer"><span id="feed">❯ Select a job, then type any key. Commands execute automatically.</span><span class="cursor-block" aria-hidden="true">█</span></footer>
-        <div class="payout" id="payout" aria-hidden="true"><span>CONTRACT COMPLETE</span><strong id="payout-amount">+$75</strong><small>PAYMENT RECEIVED</small></div>
-        <div class="milestone" id="milestone" aria-hidden="true"><span>[ ACCESS GRANTED ]</span><strong id="milestone-name">ROUTER</strong><small>Moving to the next target...</small></div>
       </section>
     </div>
     <footer class="page-footer"><span>CHOOSE A TARGET. BREACH THE CHAIN. GET PAID.</span><span>ASCII LAB / BAYLEL GAMES</span></footer>
     <div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
   </main>
-  <script type="module" src="app.js?v=3"></script>
+  <script type="module" src="app.js?v=4"></script>
 </body>
 </html>

@@ -53,21 +53,21 @@ h1{margin:8px 0;font-size:clamp(20px,2vw,27px);font-weight:400;letter-spacing:-1
 #status{color:var(--green);font-size:9px;white-space:nowrap}
 .code-window{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:16px 18px;background:radial-gradient(ellipse at 0% 0%,#1b422122,transparent)}
 #code{flex-shrink:0;font-size:12px;line-height:21px;overflow-wrap:anywhere}
-.log-line{min-height:21px;color:#8eae97}
+.log-line{min-height:21px;color:#8eae97;white-space:pre-wrap}
 .log-line.command{color:var(--bright)}
+.log-line.injection,#command-text.injection{color:#a3dfe1}
 .log-line.dim{color:var(--dim)}
 .log-line.system{color:var(--gold)}
 .log-line.success{color:var(--green)}
 .log-line.reward{color:var(--gold);font-weight:700}
 .command-entry{border-top:1px dashed var(--line);padding:13px 18px;background:#101e15;min-height:87px}
-.prompt-line{display:flex;gap:9px;align-items:baseline;min-height:24px;font-size:12px;overflow-wrap:anywhere}
+.prompt-line{display:flex;gap:9px;align-items:flex-start;font-size:12px;overflow-wrap:anywhere}
 .prompt-symbol{color:var(--gold)}
-#command-text{color:var(--bright)}
+#command-scroll{flex:1;min-width:0;height:54px;line-height:18px;overflow:hidden}
+#command-text{color:var(--bright);white-space:pre-wrap}
 .typing-cursor{display:inline-block;background:var(--green);width:7px;height:13px;flex-shrink:0;animation:cursor 1s steps(1) infinite}
 .command-meta{display:flex;justify-content:space-between;gap:12px;font-size:9px;color:var(--muted);margin-top:9px;line-height:1.5}
 #command-count{white-space:nowrap;color:var(--green)}
-.execution-track{height:3px;background:#294333;margin:7px 0 0}
-#execution-fill{height:100%;background:var(--gold);width:0}
 .network{background:#0d1911;min-width:0;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .network .pane-title{padding:0 14px}
 #route-status{color:var(--green)}
@@ -76,7 +76,6 @@ h1{margin:8px 0;font-size:clamp(20px,2vw,27px);font-weight:400;letter-spacing:-1
 .node pre{font:11px/14px Terminal,"Cascadia Code","Liberation Mono",monospace;margin:0 auto;white-space:pre;width:max-content}
 .node.active{color:var(--green);text-shadow:0 0 12px #91fbaa33}
 .node.done{color:#a2c3aa}
-.node.breached{color:var(--gold)}
 .node-wire{height:16px;line-height:16px;text-align:center;font-size:11px;color:var(--dim)}
 .node.done .node-wire{color:#6fac7e}
 .network-note{border-top:1px dashed var(--line);padding:11px 14px;font-size:9px;line-height:1.5;color:var(--muted)}
@@ -94,25 +93,16 @@ h1{margin:8px 0;font-size:clamp(20px,2vw,27px);font-weight:400;letter-spacing:-1
 #hack{height:56px;flex:0 0 255px;background:#93edaa;color:#0c2916;border:1px solid #c1ffd2;border-bottom:4px solid #4a955f;border-radius:4px;display:flex;align-items:center;justify-content:center;gap:13px;font-size:20px;font-weight:700;letter-spacing:2px;cursor:pointer;touch-action:none;user-select:none;transition:background .08s,box-shadow .08s,transform .08s}
 #hack:hover{background:#b3ffc5;box-shadow:0 0 20px #93edaa1f}
 #hack.pressed{transform:translateY(2px);border-bottom-width:2px;background:#d4ffdf}
-#hack.busy{background:#213c2a;color:#9bb9a3;border-color:#547460;font-size:14px}
 #hack kbd{font:9px Terminal,monospace;letter-spacing:1px;border:1px solid #397b4c70;padding:5px 7px}
-#hack.busy kbd{display:none}
 .button-prompt{font-size:16px;font-weight:400;letter-spacing:-3px}
 .console-footer{min-height:37px;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 20px;border-top:1px solid var(--line);font-size:10px;line-height:1.5;color:var(--muted)}
 .cursor-block{animation:cursor 1s steps(1) infinite}
 .page-footer{display:flex;justify-content:space-between;gap:15px;margin-top:13px;color:#728d7a;font-size:8px;letter-spacing:1px}
-.payout,.milestone{position:absolute;z-index:4;left:0;right:220px;top:42%;pointer-events:none;display:flex;align-items:center;flex-direction:column;opacity:0;background:#08150eef;padding:22px 15px;border-block:1px solid #386045;transform:translateY(-30%)}
-.payout>span,.milestone>span{font-size:11px;letter-spacing:2px;color:var(--gold)}
-.payout strong{font-size:64px;font-weight:400;letter-spacing:-3px;color:var(--bright);margin:8px 0}
-.payout small,.milestone small{font-size:9px;color:var(--muted);letter-spacing:1px}
-.milestone strong{font-size:24px;letter-spacing:1px;margin:10px 0;color:var(--bright);font-weight:400}
-.payout.show,.milestone.show{opacity:1;animation:appear .2s ease-out}
 .terminal.paid .progress-track{background:#86e89c}
 .terminal.paid #progress-fill{background:#86e89c}
 .terminal.paid #ascii-bar{color:#11341a}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 @keyframes cursor{50%{opacity:0}}
-@keyframes appear{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
 @keyframes cashup{from{opacity:1;transform:translateY(8px)}to{opacity:0;transform:translateY(-30px)}}
 @media(min-width:1000px) and (max-height:800px){
   .shell{padding-top:12px}.masthead{margin-bottom:12px}.session-head{padding-top:13px;padding-bottom:13px}
@@ -123,7 +113,7 @@ h1{margin:8px 0;font-size:clamp(20px,2vw,27px);font-weight:400;letter-spacing:-1
 @media(max-width:1100px){
   .shell{padding-inline:18px}.layout{grid-template-columns:178px minmax(0,1fr);gap:14px}
   .workspace{grid-template-columns:minmax(0,1fr) 195px}.node pre{font-size:10px}
-  .payout,.milestone{right:195px}#hack{flex-basis:220px}.job-title{font-size:12px}
+  #hack{flex-basis:220px}.job-title{font-size:12px}
 }
 @media(max-width:820px){
   .layout{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.job-sidebar{border-radius:6px}.sidebar-head{padding:10px 14px}
@@ -146,12 +136,13 @@ h1{margin:8px 0;font-size:clamp(20px,2vw,27px);font-weight:400;letter-spacing:-1
   #ascii-bar{font-size:11px;letter-spacing:1px}.action-row{gap:10px}#hack{flex:1;font-size:17px;gap:9px;height:54px}
   #hack kbd{font-size:8px;padding:4px}.reward strong{font-size:23px}.reward>span{font-size:8px;letter-spacing:.5px}
   .reward small{display:none}.console-footer{padding:9px 12px;font-size:9px}
-  .payout,.milestone{right:0;top:53%}.payout strong{font-size:52px}.page-footer{font-size:7px;letter-spacing:.1px}
+  .page-footer{font-size:7px;letter-spacing:.1px}
 }
 @media(max-width:820px) and (max-height:800px){
   .shell{padding-block:8px}.masthead{margin-bottom:8px}.layout{gap:8px}
   .sidebar-head,.page-footer,.mission p,.console-footer{display:none}
   .session-head{padding-block:8px}.command-entry{min-height:70px;padding-block:8px}
   .controls{padding-block:8px}.action-row{margin-top:8px}
+  #command-scroll{height:36px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.terminal:after{display:none}}

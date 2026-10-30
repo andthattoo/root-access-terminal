@@ -1,12 +1,12 @@
-import {TerminalGame,contracts} from './game.js?v=2';
+import {TerminalGame,contracts} from './game.js?v=4';
 const game=new TerminalGame();
 const elements=new Map();
 const $=id=>{if(!elements.has(id))elements.set(id,document.getElementById(id));return elements.get(id);};
 const money=n=>'$'+Math.round(n).toLocaleString('en-US');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const heldKeys=new Set();
-let pointerHeld=false,holding=false,repeatStart=0,repeatTimer=0,lastPulse=-Infinity,lastInput=-Infinity,audio;
-let displayedJob=-1,logKey='',nodeViews=[],jobViews=[],lastFrame=performance.now();
+let pointerHeld=false,holding=false,repeatTimer=0,lastPulse=-Infinity,lastInput=-Infinity,audio;
+let displayedJob=-1,logKey='',nodeViews=[],jobViews=[];
 let displayCash=0,cashFrom=0,cashTo=0,cashAt=0;
 
 function tone(hz,duration=.035,gain=.017,delay=0){
@@ -64,7 +64,7 @@ function renderLog(force=false){
   while(code.children.length>1&&code.scrollHeight>height)code.firstElementChild.remove();
 }
 function render(){
-  const s=game.state,c=game.contract,paid=game.paid,milestone=s.phase==='milestone';
+  const s=game.state,c=game.contract,paid=game.paid;
   if(displayedJob!==game.index){displayedJob=game.index;buildNodes();}
   $('session-path').textContent='ra://'+c.host;
   $('job-id').textContent='CONTRACT '+String(game.index+1).padStart(3,'0')+' / RUN '+(game.runs[game.index]+(paid?0:1));
@@ -77,28 +77,26 @@ function render(){
   $('progress-fill').style.transform='scaleX('+game.progress+')';
   const filled=Math.round(game.progress*32);$('ascii-bar').textContent='['+'█'.repeat(filled)+'·'.repeat(32-filled)+']';
   $('operation').textContent=paid?'ALL TARGETS BREACHED':game.node.name+' / COMMAND '+(s.commandIndex+1)+' OF '+game.node.commands.length;
-  $('route-status').textContent=(paid?c.nodes.length:s.nodeIndex+(milestone?1:0))+' / '+c.nodes.length;
+  $('route-status').textContent=(paid?c.nodes.length:s.nodeIndex)+' / '+c.nodes.length;
   nodeViews.forEach(({li,art},index)=>{
-    const done=paid||index<s.nodeIndex||(index===s.nodeIndex&&milestone),active=!done&&index===s.nodeIndex;
-    li.className='node'+(done?' done':'')+(active?' active':'')+(index===s.nodeIndex&&milestone?' breached':'');
+    const done=paid||index<s.nodeIndex,active=!done&&index===s.nodeIndex;
+    li.className='node'+(done?' done':'')+(active?' active':'');
     if(active)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');
     const progress=active?game.nodeProgress:done?1:0,blocks=Math.floor(progress*6);
     const status=done?'BREACHED / ACCESS OK':active?'['+'█'.repeat(blocks)+'·'.repeat(6-blocks)+'] '+Math.floor(progress*100)+'%':'LOCKED / IN SEQUENCE';
     art.textContent=frame([String(index+1).padStart(2,'0')+' '+c.nodes[index].name,status]);
     li.setAttribute('aria-label',c.nodes[index].name+': '+(done?'breached':active?'active, '+Math.floor(progress*100)+' percent':'locked'));
   });
-  $('node-hint').textContent=paid?'Chain complete. Payment received.':milestone?'Access granted. Opening next target.':'Breach each target in order.';
-  const executing=s.phase==='executing';
-  $('command-text').textContent=paid?'All targets secured. Payment received.':milestone?'Access granted. Routing to next target...':executing?'Executing '+game.command.text:game.visibleCommand;
-  $('cursor').hidden=s.phase!=='typing';$('execution').hidden=!executing;
+  $('node-hint').textContent=paid?'Chain complete. Keep typing for the next job.':'Breach each target in order.';
+  const injection=!paid&&game.command.kind==='injection';
+  $('command-text').textContent=paid?'Payment received. Keep typing for the next contract.':game.visibleCommand;
+  $('command-text').classList.toggle('injection',injection);
+  $('command-scroll').scrollTop=$('command-scroll').scrollHeight;
+  $('cursor').hidden=paid;
   $('command-count').textContent=paid?'COMPLETE':'CMD '+(s.commandIndex+1)+' / '+game.node.commands.length;
-  $('command-hint').textContent=executing?'Running command. Input resumes when it finishes.':paid?'Next contract opens automatically.':milestone?'Target secured. Next node unlocking.':'Type any key. Hold to keep writing.';
-  $('status').textContent=paid?'PAYMENT RECEIVED':milestone?'ACCESS GRANTED':executing?'EXECUTING':performance.now()-lastInput<350?'COMPOSING':'AWAITING INPUT';
-  $('hack').classList.toggle('busy',s.phase!=='typing');
-  $('hack-label').textContent=paid?'PAID':milestone?'BREACHED':executing?'EXECUTING':'HACK';
-  $('hack').setAttribute('aria-busy',String(executing));
-  $('payout').classList.toggle('show',paid);$('milestone').classList.toggle('show',milestone);
-  $('payout-amount').textContent='+'+money(game.reward);$('milestone-name').textContent=game.node.name;
+  $('command-hint').textContent=paid?'No cooldown. Your next key starts the next job.':injection?'Typing a sandbox patch. Keep going.':'Type any key. Hold to keep writing.';
+  $('status').textContent=paid?'PAYMENT RECEIVED':performance.now()-lastInput<350?(injection?'INJECTING PATCH':'COMPOSING'):'AWAITING INPUT';
+  $('hack-label').textContent=paid?'NEXT JOB':'HACK';
   document.querySelector('.terminal').classList.toggle('paid',paid);
   jobViews.forEach(({button,state,fill},index)=>{
     const p=game.progressFor(index),session=game.sessions[index],selected=index===game.index;
@@ -114,16 +112,12 @@ function handle(event){
     cashFrom=displayCash;cashTo=game.cash;cashAt=performance.now();
     $('cash-float').textContent=reduced?'':'+'+money(event.amount);
     $('cash-float').style.animation='none';void $('cash-float').offsetWidth;$('cash-float').style.animation='cashup .8s ease-out forwards';
-    feed('All targets breached. '+money(event.amount)+' received. Next contract incoming.');
+    feed('All targets breached. '+money(event.amount)+' received. Keep typing for the next job.');
     $('announcer').textContent=game.contract.target+' complete. Earned '+money(event.amount)+'.';
     tone(523,.13,.025);tone(659,.16,.025,.09);tone(784,.25,.024,.18);
-  }else if(event.type==='milestone'){
-    feed(event.name+' breached. Establishing the next link.');
-    $('announcer').textContent=event.name+' breached.';tone(440,.1,.018);tone(660,.15,.02,.08);
-  }else if(event.type==='next'){
-    displayedJob=-1;logKey='';feed('Next contract loaded. Keep typing, or choose a job.');
   }else if(event.type==='node'){
-    feed('Now targeting '+game.node.name+'. Compose the next command.');
+    feed(event.name+' breached. Now targeting '+game.node.name+'.');
+    $('announcer').textContent=event.name+' breached.';tone(440,.1,.018);tone(660,.15,.02,.08);
     if($('nodes').scrollWidth>$('nodes').clientWidth){
       const current=nodeViews[game.state.nodeIndex].li;
       $('nodes').scrollTo({left:current.offsetLeft-$('nodes').offsetLeft-10,behavior:reduced?'instant':'smooth'});
@@ -132,15 +126,14 @@ function handle(event){
   render();
 }
 function write(){
-  const now=performance.now();if(now-lastPulse<50||game.state.phase!=='typing')return;
+  const now=performance.now();if(now-lastPulse<50)return;
   lastPulse=now;lastInput=now;
   const event=game.pulse();$('hack').classList.add('pressed');
   tone(190+Math.random()*100,.027,.012);
-  if(event.type==='execute')feed('Executing against '+game.node.name+'...');
-  render();
+  handle(event);
 }
-function stop(){holding=false;clearTimeout(repeatStart);clearInterval(repeatTimer);$('hack').classList.remove('pressed');}
-function start(){if(holding)return;holding=true;enableAudio();write();repeatStart=setTimeout(()=>{repeatTimer=setInterval(write,125);},250);}
+function stop(){holding=false;clearInterval(repeatTimer);$('hack').classList.remove('pressed');}
+function start(){if(holding)return;holding=true;enableAudio();write();repeatTimer=setInterval(write,125);}
 function releaseAll(){heldKeys.clear();pointerHeld=false;stop();}
 function releasePointer(){pointerHeld=false;if(!heldKeys.size)stop();}
 function isHackKey(event){
@@ -158,11 +151,8 @@ $('hack').addEventListener('pointerdown',event=>{if(event.button!==0)return;even
 $('hack').addEventListener('pointerup',releasePointer);$('hack').addEventListener('pointercancel',releasePointer);$('hack').addEventListener('lostpointercapture',releasePointer);
 $('hack').addEventListener('click',event=>{if(event.detail===0){enableAudio();write();}});
 window.addEventListener('blur',releaseAll);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseAll();lastFrame=performance.now();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseAll();});
 function tick(now){
-  const elapsed=Math.min(100,Math.max(0,now-lastFrame));lastFrame=now;
-  if(!document.hidden)handle(game.advance(elapsed));
-  if(game.state.phase==='executing')$('execution-fill').style.width=(100*(1-game.state.remaining/game.command.duration))+'%';
   if(displayCash!==cashTo){
     const t=Math.min(1,(now-cashAt)/620);displayCash=t===1?cashTo:cashFrom+(cashTo-cashFrom)*(1-Math.pow(1-t,3));$('cash').textContent=money(displayCash);
   }
@@ -171,5 +161,8 @@ function tick(now){
   requestAnimationFrame(tick);
 }
 setupJobs();render();
-new ResizeObserver(()=>renderLog(true)).observe($('code-window'));
+new ResizeObserver(()=>{
+  renderLog(true);
+  $('command-scroll').scrollTop=$('command-scroll').scrollHeight;
+}).observe($('code-window'));
 requestAnimationFrame(tick);

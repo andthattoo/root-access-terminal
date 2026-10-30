@@ -6,8 +6,10 @@ A standalone ASCII hacking toy by Baylel Games.
 
 Select one of six jobs from the left menu, then type with any regular keyboard key
 or hold HACK. Each job has a unique chain of 3–5 targets. Compose CLI commands,
-watch them execute, and breach each target in sequence to collect the reward.
-The next contract opens automatically. Harder jobs require more input and targets.
+inspect ports, type sandbox code patches, and breach each target in sequence.
+Commands execute on their final keystroke, with no execution or transition waits.
+After payment, the next input starts typing in the next contract immediately.
+Harder jobs require more input and targets.
 
 Switching jobs pauses and preserves unfinished progress for the browser session.
 Completed jobs can be replayed. The on-screen HACK button supports mouse and touch.
@@ -34,3 +36,5 @@ The existing GitHub Pages mirror still serves `main`; `.nojekyll` keeps it a
 plain static site. All asset URLs are relative.
 
 All code shown in the terminal is fictional visual feedback.
+
+Run the gameplay checks with `node --test tests/game.test.mjs` (Node 24+).
